@@ -71,7 +71,22 @@ def test_to_prompt_context_includes_skeleton():
 
 @pytest.mark.asyncio
 async def test_load_domain_prior_returns_prior():
-    """读平台 seed 领域（conftest 已 init_db + seed domains）。"""
+    """读平台 seed 领域（自包含：seed 最小 web_novel；fixtures 数据不在公开仓库）。"""
+    from core.gateway.domain_registry import DomainRegistry
+
+    await DomainRegistry.create_domain({
+        "id": "platform:web_novel",
+        "name": "网文小说",
+        "description": "测试用最小领域",
+        "source": "platform",
+        "phase_definitions": [
+            {"id": "outline", "label": "大纲"},
+            {"id": "draft", "label": "初稿"},
+            {"id": "polish", "label": "润色"},
+            {"id": "review", "label": "审校"},
+        ],
+        "metadata": {},
+    })
     prior = await load_domain_prior("platform:web_novel")
     assert prior is not None
     assert prior.domain_id == "platform:web_novel"
