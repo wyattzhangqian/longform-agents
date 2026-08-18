@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Build output
+web/dist/
+web/.vite/
+web/tsconfig.tsbuildinfo
+
+# Runtime data
+data/*.db
+data/*.db-journal
+data/*.db-shm
+data/*.db-wal
+data/*.db.corrupt*
+data/.auth_secret
+data/backup/
+data/chroma/
+db/agent_platform.db
+outputs/
+artifacts/
+uploads/
+
+# Logs
+*.log
+logs/
+
+# Test & coverage
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Env & secrets
+.env
+.env.local
+.env.production
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local deployment artifacts
+cloudbaserc.json
+screenshot.png

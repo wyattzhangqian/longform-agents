@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main, oss]
+  pull_request:
+
+jobs:
+  engine-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 只用 3.11：代码用了 `X | None`，Python 3.9 + Pydantic v2 会崩
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Run engine tests
+        # 不加 --timeout：部分集成测试（quality_gate_retry 等）跑 2-3 分钟，60s 会误杀
+        run: python -m pytest tests/ -p no:warnings --tb=short
+        env:
+          DATABASE_PATH: /tmp/ci_test.db
+          AUTH_ENABLED: "false"

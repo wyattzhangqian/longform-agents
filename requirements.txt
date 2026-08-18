@@ -1,0 +1,31 @@
+# 生产依赖 — 上限锁定主版本，保证环境可复现（CI 同步验证）
+fastapi>=0.110.0,<1.0.0
+uvicorn>=0.29.0,<1.0.0
+aiosqlite>=0.20.0,<0.23.0
+pydantic>=2.6.0,<3.0.0
+aiohttp>=3.9.0,<4.0.0
+python-multipart>=0.0.9,<0.1.0
+python-dotenv>=1.0.0,<2.0.0
+duckduckgo-search>=7.0.0,<9.0.0
+
+# 认证（P0 用户体系）
+bcrypt>=4.0.0,<5.0.0
+# 凭证加密（Fernet）
+cryptography>=42.0.0,<45.0.0
+
+# 结构化日志
+loguru>=0.7.0,<0.8.0
+
+# PostgreSQL（可选，生产环境推荐）
+asyncpg>=0.29.0,<0.31.0
+
+# Redis + Celery（可选，生产环境推荐）
+redis>=5.0.0,<6.0.0
+celery>=5.4.0,<6.0.0
+
+# Prometheus 指标（P2 可观测性）
+prometheus-client>=0.20.0,<0.22.0
+
+# chromadb 按需安装（启动时 try/import，缺失则回退内存 TF-IDF）
+# Docker 构建跳过以加速（节省 ~200MB + 3min 安装时间）
+# chromadb>=0.4.0,<1.0.0

@@ -1,0 +1,3 @@
+-- 初始 schema 在 db/schema.sql 中定义
+-- 此迁移文件作为 schema 变更的记录起点
+-- 后续变更以 002_xxx.sql 追加
