@@ -28,7 +28,7 @@ Planner 体系          core/orchestration/ + core/run/plan_spec.py
   → PlanSpec（统一计划契约：phase_id 是唯一引用键；字段无损，旧计划兼容读取）
   → template_compiler.compile_from_plan（无损构建 PhaseSpec + strategy 贯通）
   → WorkflowGraph（阶段=节点，依赖=边；可并行阶段被 Scheduler 并行组调度）
-  → GraphRuntime（拓扑排序 + 入度追踪 + 循环检测；Router 4 策略：AST/HANDLER/LLM/共识）
+  → 工作流图执行引擎（拓扑排序 + 入度追踪 + 循环检测；Router 4 策略：AST/HANDLER/LLM/共识）
   → BaseAgent 执行（ContextBuilder → tool loop → Memory；_ask_peer 子图真实调用同伴）
       · 每阶段产物经 DbQualityGateway 按领域规则校验
       · 跨阶段约束经 negotiation_ledger 提取→注入→覆盖率校验→回写
@@ -44,7 +44,7 @@ Planner 体系          core/orchestration/ + core/run/plan_spec.py
 | `core/run/plan_spec.py` | 统一计划契约 `PlanSpec`/`PhasePlan` + `normalize_plan`（旧数据兼容） |
 | `core/run/phase_spec.py` | 运行时阶段契约 `PhaseSpec`（质量/知识/工具策略） |
 | `core/run/template_compiler.py` | 计划→工作流图编译；缓存 key 覆盖完整 spec + strategy |
-| `core/graph/runtime.py` | GraphRuntime 唯一执行导演：Scheduler / Router / NodeExecutor(11 节点) / ParallelExecutor / StateManager |
+| `core/graph/runtime.py` | 工作流图执行引擎（唯一执行导演）：Scheduler / Router / NodeExecutor(11 节点) / ParallelExecutor / StateManager |
 | `core/agent/base.py` | BaseAgent：ContextBuilder → tool loop → Memory；`_ask_peer` 子图协作 |
 | `core/run/run_context.py` | RunContext 单一真相（Pydantic + checkpoint 乐观锁 + 降级记录） |
 | `core/run/negotiation.py` | 协商闭环：约束提取 → 注入 → 覆盖率校验 → 回写台账 |

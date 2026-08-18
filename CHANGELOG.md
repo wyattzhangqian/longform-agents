@@ -11,7 +11,7 @@ Agent Loom 的变更记录。项目自 2026-05 起经真实迭代开发；引擎
 
 - **Planner 规划管线**：意图识别 → 领域先验 → 自适应分解 → 确定性校验 → 语义批评（`plan_critic`）→ 修订（`plan_refiner`）→ Agent 历史评分匹配（`agent_matcher`）；支持自然语言人工修订（`plan_revision`）
 - **统一计划契约 PlanSpec**：`phase_id` 唯一引用键，Planner 输出 = 前端展示 = 数据库 JSON = 运行时 PhaseSpec = 工作流图，五处结构一致、字段无损
-- **图执行引擎（GraphRuntime）**：单点编排，Scheduler 拓扑排序 + 并行组 + 循环检测；Router 4 策略；11 种节点；checkpoint 乐观锁断点恢复
+- **工作流图执行引擎**：单点编排，Scheduler 拓扑排序 + 并行组 + 循环检测；Router 4 策略；11 种节点；checkpoint 乐观锁断点恢复
 - **协商闭环**：Agent 执行中 `ask_peer` 真实调用同伴、跨阶段约束台账（`negotiation_ledger`）、质量门覆盖率校验、人类插话
 - **长内容骨架**：L4 全书设定 + L1 逐章 Brief + `current_unit` 推进，多遍规划控制角色漂移与情节矛盾
 - **领域数据驱动**：`quality_domains` / `quality_rules` DB 驱动（网文/漫画/漫剧/音乐流程），扩展新领域写 DB 即可
