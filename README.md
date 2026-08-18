@@ -1,4 +1,4 @@
-# Agent Loom
+# Longform Agents
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)]() [![CI](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml/badge.svg)](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml)
 
@@ -8,7 +8,7 @@
 
 ## 🛡️ 开源边界（open-core，先读这段）
 
-本仓库是 **Agent Loom 的开源引擎层**——平台的**主框架全部在这里**：领域知识体系、规划、工作流图执行、Agent 协作、协商闭环、规则校验。
+本仓库是 **Longform Agents 的开源引擎层**——平台的**主框架全部在这里**：领域知识体系、规划、工作流图执行、Agent 协作、协商闭环、规则校验。
 
 **没有公开的是平台产品层的「细节」**：
 - 完整平台 Web 控制台与产品交互（工作台/资产管理/编排可视化）
@@ -23,7 +23,7 @@
 
 ### 📚 领域知识与规则体系（核心）
 
-Agent Loom 的核心不是某个单点机制，而是**领域知识 + 规则**这套让长内容保持一致性的体系——这是它区别于「多 Agent 框架拼装」的地方：
+Longform Agents 的核心不是某个单点机制，而是**领域知识 + 规则**这套让长内容保持一致性的体系——这是它区别于「多 Agent 框架拼装」的地方：
 
 - **领域定义（数据驱动）**：每个领域（网文/漫画/漫剧/音乐…）的标准流程、阶段骨架都是**数据**（`quality_domains`），**扩展新领域写 DB 即可，不改一行 `core/` 代码**
 - **质量规则（领域 know-how）**：每个领域带一套规则（`quality_rules`）——内容要求、格式、约束覆盖……这些规则是「长内容一致性做到 90% 还是 60%」的差别所在，也是最值钱的部分
@@ -44,7 +44,7 @@ Agent Loom 的核心不是某个单点机制，而是**领域知识 + 规则**�
 
 ### 🔧 工作流图执行引擎
 
-Agent Loom 使用工作流图执行引擎调度多阶段任务：每个阶段是图中的一个节点，阶段之间的依赖关系是图中的边。引擎根据这些依赖关系决定执行顺序，互不依赖的阶段可以并行运行。
+Longform Agents 使用工作流图执行引擎调度多阶段任务：每个阶段是图中的一个节点，阶段之间的依赖关系是图中的边。引擎根据这些依赖关系决定执行顺序，互不依赖的阶段可以并行运行。
 
 - 支持**串行、并行和 DAG 依赖执行**
 - 支持实验性的**圆桌协作**和**自适应路由**：前者用于多 Agent 讨论，后者根据阶段产出决定继续、重试、跳过或请求人工介入
@@ -89,7 +89,7 @@ Agent Loom 使用工作流图执行引擎调度多阶段任务：每个阶段是
 
 ## Development & Provenance
 
-Agent Loom 以「**人设计架构、AI 辅助编码**」的方式开发。
+Longform Agents 以「**人设计架构、AI 辅助编码**」的方式开发。
 
 - **设计来自真实运行**：领域知识体系、工作流图执行、协商闭环、骨架策略等核心决策由人设计，并在多轮真实内容生成运行中迭代打磨——不是概念堆叠。
 - **编码 AI 辅助**：代码编写与测试生成大量借助 AI 辅助工具完成。

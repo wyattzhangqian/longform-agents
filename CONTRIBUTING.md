@@ -1,6 +1,6 @@
 # Contributing
 
-感谢你想为 **Agent Loom 引擎层**贡献代码。这是一个 AI-native 多 Agent 协作框架，核心是领域知识与规则体系 + Planner 统一计划契约（PlanSpec）+ 工作流图执行 + 协商闭环。
+感谢你想为 **Longform Agents 引擎层**贡献代码。这是一个 AI-native 多 Agent 协作框架，核心是领域知识与规则体系 + Planner 统一计划契约（PlanSpec）+ 工作流图执行 + 协商闭环。
 
 > 本仓库是开源**引擎层**（open-core）。平台产品层（完整 Web 控制台、产品体验、领域知识规则）为闭源，不在本仓库——贡献请聚焦引擎能力本身。
 
