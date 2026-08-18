@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)]() [![CI](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml/badge.svg)](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml)
 
-面向多模态长内容的多 Agent 协作框架。最底层，它是一套**高可靠的 Agent 协作框架**——让多个 AI 真正协作，把一件大而连续的事情做成；写、画、生视频、生音乐，是它跑通的场景。
+面向多模态长内容的多 Agent 协作框架。最底层，它是一套**高可靠的 Agent 协作框架**——让多个 AI 真正协作，把一件大而连续的事情做成；网文小说、漫画分镜、漫剧、歌曲，是它跑通的场景。
 
 ## 为什么会有它
 
@@ -25,19 +25,19 @@ Planner 把目标拆成阶段，每个阶段交给专门的 Agent——写手、
 
 ## 能做什么
 
-### 写
+### 网文、小说、剧本
 
-网文、剧本、长篇连载。Planner 拆出大纲、初稿、润色、审校，专门的写手 Agent 负责各阶段，长内容骨架锚定全书设定，越写越不跑偏。
+Planner 拆出大纲、初稿、润色、审校，专门的写手 Agent 负责各阶段，长内容骨架锚定全书设定，越写越不跑偏。
 
-### 画
+### 漫画分镜、角色图
 
 漫画的分镜、角色参考图、线稿上色。生图 Agent 按剧本产出，质量规则检查构图和一致性。
 
-### 生视频
+### 漫剧
 
 漫剧的配音脚本、分镜、后期。文字、画面、时间线由不同 Agent 协作推进，前后对得上。
 
-### 生音乐
+### 歌曲、配乐
 
 作词、作曲、编曲、混音、母带。音乐 Agent 按设定产出，规则校验节奏和情感走向。
 
