@@ -2,34 +2,35 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)]() [![CI](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml/badge.svg)](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml)
 
-> 面向长内容与复杂任务的多 Agent 协作平台。核心是**领域知识与规则体系**：Planner 把自然语言目标编译成可执行计划，多个 Agent 按阶段依赖协作执行，全程由领域知识、质量规则与骨架约束驱动，保证长内容一致性。
+> 面向长内容与复杂任务的多 Agent 协作框架。它让多个 Agent **真正协作起来**：Planner 把自然语言目标编译成可执行计划，Agent 按阶段依赖协作执行，由领域知识与规则驱动，保证长内容一致性。
 
 ---
 
 ## 🛡️ 开源边界（open-core，先读这段）
 
-本仓库是 **Longform Agents 的开源引擎层**——平台的**主框架全部在这里**：领域知识体系、规划、工作流图执行、Agent 协作、协商闭环、规则校验。
+本仓库是 **Longform Agents 的开源引擎层**——平台的**主框架全部在这里**：多 Agent 协作、规划、工作流图执行、长内容骨架、领域知识与规则体系、协商闭环。
 
 **没有公开的是平台产品层的「细节」**：
 - 完整平台 Web 控制台与产品交互（工作台/资产管理/编排可视化）
 - 平台产品上的体验优化与运营细节
 - **完整领域知识**：各领域内置的质量规则、骨架模板、知识包——它们随平台产品层维护，是「把一件事做到多好」的沉淀
 
-也就是说：**框架与领域机制你都能在本仓库看到、跑通、扩展**；而「某个领域被调优到多好」的完整规则沉淀属于平台产品层。
+也就是说：**框架与协作机制你都能在本仓库看到、跑通、扩展**；而「某个领域被调优到多好」的完整规则沉淀属于平台产品层。
 
 ---
 
 ## 核心能力
 
-### 📚 领域知识与规则体系（核心）
+**Longform Agents 的竞争力，是「多 Agent 如何协作」与「长内容如何保持一致」这两件事——叠加起来，才让长内容制作真正能交给多个 Agent 协作完成。**
 
-Longform Agents 的核心不是某个单点机制，而是**领域知识 + 规则**这套让长内容保持一致性的体系——这是它区别于「多 Agent 框架拼装」的地方：
+### 💬 多 Agent 协作（平台立身之本）
 
-- **领域定义（数据驱动）**：每个领域（网文/漫画/漫剧/音乐…）的标准流程、阶段骨架都是**数据**（`quality_domains`），**扩展新领域写 DB 即可，不改一行 `core/` 代码**
-- **质量规则（领域 know-how）**：每个领域带一套规则（`quality_rules`）——内容要求、格式、约束覆盖……这些规则是「长内容一致性做到 90% 还是 60%」的差别所在，也是最值钱的部分
-- **长内容骨架**：L4 全书设定 + L1 逐章 Brief + `current_unit` 推进，逐章写作自动锚定上下文位置，降低角色漂移与情节矛盾
-- **知识注入**：领域知识在规划 / 执行 / 校验三阶段自动注入，Agent 不裸奔
-- **规则校验**：阶段产出自动按领域规则检查，不达标就标记重做或失败——**宁可显式失败，也不假装成功**
+不是「A 做完丢给 B」的流水线接力，而是**对话式协作**：
+
+- **Agent 间提问（`ask_peer`）**：执行中 Agent 真正调用同伴执行、拿同伴结果继续，非 LLM 自问自答（子图嵌套）
+- **协商闭环**（`core/run/negotiation.py`）：跨阶段约束提取 → 注入下游 prompt → 规则校验覆盖率 → 回写台账（`negotiation_ledger`），保证前后不丢约束
+- **人类插话**：运行中支持人工指令干预，不用等整个流程跑完（完整交互在平台产品层）
+- 协作不是把任务切成几段各写各的，而是**有来有回、前后一致**地共同完成一件事
 
 ### 🧠 Planner 规划管线
 
@@ -44,7 +45,7 @@ Longform Agents 的核心不是某个单点机制，而是**领域知识 + 规�
 
 ### 🔧 工作流图执行引擎
 
-Longform Agents 使用工作流图执行引擎调度多阶段任务：每个阶段是图中的一个节点，阶段之间的依赖关系是图中的边。引擎根据这些依赖关系决定执行顺序，互不依赖的阶段可以并行运行。
+阶段是图节点、依赖是边，引擎按依赖决定执行顺序，互不依赖的阶段并行运行：
 
 - 支持**串行、并行和 DAG 依赖执行**
 - 支持实验性的**圆桌协作**和**自适应路由**：前者用于多 Agent 讨论，后者根据阶段产出决定继续、重试、跳过或请求人工介入
@@ -52,11 +53,18 @@ Longform Agents 使用工作流图执行引擎调度多阶段任务：每个阶�
 - 内建**规则校验**、**断点恢复（checkpoint）**、**运行锁**
 - 引擎内部：Scheduler（拓扑排序 + 并行组 + 循环检测）· Router（4 种路由策略）· NodeExecutor（11 种节点类型）· ParallelExecutor（并发保序）· StateManager（乐观锁）
 
-### 💬 多 Agent 协作
+### 📚 领域知识与规则体系（长内容一致性的关键）
 
-- **Agent 间提问（`ask_peer`）**：执行中 Agent 真正调用同伴执行，非 LLM 自问自答（子图嵌套）
-- **协商闭环**（`core/run/negotiation.py`）：跨阶段约束提取 → 注入下游 prompt → 规则校验覆盖率 → 回写台账，保证前后不丢约束
-- **人类插话**：运行中支持人工指令干预（完整交互在平台产品层）
+长内容一致性的 **know-how** 沉淀在这里——这是它区别于「多 Agent 框架拼装」的地方：
+
+- **领域定义（数据驱动）**：每个领域（网文/漫画/漫剧/音乐…）的标准流程、阶段骨架都是**数据**（`quality_domains`），**扩展新领域写 DB 即可，不改一行 `core/` 代码**
+- **质量规则（领域 know-how）**：每个领域带一套规则（`quality_rules`）——内容要求、格式、约束覆盖……这些规则是「长内容一致性做到 90% 还是 60%」的差别所在
+- **知识注入**：领域知识在规划 / 执行 / 校验三阶段自动注入，Agent 不裸奔
+- **规则校验**：阶段产出自动按领域规则检查，不达标就标记重做或失败——**宁可显式失败，也不假装成功**
+
+### 🏗️ 长内容骨架
+
+`core/skeleton/`：L4 全书设定 + L1 逐章 Brief + `current_unit` 推进，逐章写作自动锚定上下文位置，降低角色漂移与情节矛盾——这是长内容一致性在结构上的保障。
 
 ### 🛡️ 安全与治理
 
@@ -71,18 +79,18 @@ Longform Agents 使用工作流图执行引擎调度多阶段任务：每个阶�
 
 | 能力 | 状态 | 说明 |
 |------|------|------|
-| 领域知识与规则体系 | ✅ | 领域定义 + 质量规则 + 骨架 + 知识注入，全部数据驱动 |
-| 扩展新领域 | ✅ | 写 DB 即可，不改 `core/` |
-| 内置领域流程 | ✅/⚠️ | 网文（仅 LLM）✅；漫画/漫剧/音乐需多模态模型 ⚠️ |
+| 多 Agent 协作 | ✅ | `ask_peer` 真实调用同伴 + 协商闭环 |
 | Planner 任务规划 | ✅ | 自然语言 → 多阶段协作计划（PlanSpec） |
 | 计划自动校验 / 人工修订 | ✅ | `plan_critic/refiner` + `plan_revision` |
 | 串行 / 并行 / DAG 执行 | ✅ | 工作流图执行引擎调度 |
+| 领域知识与规则体系 | ✅ | 领域定义 + 质量规则 + 知识注入，全部数据驱动 |
+| 扩展新领域 | ✅ | 写 DB 即可，不改 `core/` |
+| 内置领域流程 | ✅/⚠️ | 网文（仅 LLM）✅；漫画/漫剧/音乐需多模态模型 ⚠️ |
+| 长内容骨架 | ✅ | L4 设定 + L1 Brief 锚定 |
 | SSE 运行事件流 | ✅ | 规划与执行过程实时推送 |
-| Agent 间提问（`ask_peer`） | ✅ | 真实调用同伴 |
 | 协商台账 | ✅ | 跨阶段约束注入与校验 |
 | 规则校验 | ✅ | 领域规则自动检查产物 |
 | checkpoint 断点恢复 | ✅ | 乐观锁 + 运行历史 |
-| 长内容骨架 | ✅ | L4 设定 + L1 Brief 锚定 |
 | 圆桌协作 / 自适应路由 | 🧪 | 实验性，引擎侧已有运行入口 |
 
 ---
@@ -91,7 +99,7 @@ Longform Agents 使用工作流图执行引擎调度多阶段任务：每个阶�
 
 Longform Agents 以「**人设计架构、AI 辅助编码**」的方式开发。
 
-- **设计来自真实运行**：领域知识体系、工作流图执行、协商闭环、骨架策略等核心决策由人设计，并在多轮真实内容生成运行中迭代打磨——不是概念堆叠。
+- **设计来自真实运行**：多 Agent 协作范式、领域知识体系、工作流图执行、协商闭环、骨架策略等核心决策由人设计，并在多轮真实内容生成运行中迭代打磨——不是概念堆叠。
 - **编码 AI 辅助**：代码编写与测试生成大量借助 AI 辅助工具完成。
 - **git 历史说明**：本仓库（引擎层）自 2026-08-18 起以开源边界独立重建，历史干净、不含平台产品层与私有数据。产品层自 2026-05 起持续迭代，与其 git 历史分开维护。
 - **成熟度**：Alpha。引擎层 API 与数据模型仍在演进。
@@ -120,19 +128,20 @@ cp .env.example .env        # 填入 DEEPSEEK_API_KEY
 ## 架构概览
 
 ```
-引擎层 (core/)       领域知识体系 · Planner 管线 · 工作流图执行 · Agent 基座 · 骨架 · 协商 · Gateway
+引擎层 (core/)       多 Agent 协作 · Planner · 工作流图执行 · 骨架 · 领域知识与规则 · Gateway
 基础设施             SQLite · SSE EventBus · LLM 客户端 · Auth · Vault
 ```
 
 关键模块：
 
-- `core/gateway/domain_registry.py` + `quality_domains`/`quality_rules` — 领域知识与规则（DB 驱动，核心）
-- `core/skeleton/` — 长内容骨架系统（L4 + L1 + current_unit）
+- `core/agent/base.py` — BaseAgent 执行（ContextBuilder → tool loop → Memory，含 `ask_peer`）
+- `core/run/negotiation.py` — 协商闭环
 - `core/orchestration/` — Planner 管线（intent → domain_prior → decomposer → validator → critic/refiner → revision → agent_matcher）
 - `core/graph/runtime.py` — 工作流图执行引擎（唯一执行导演）
-- `core/agent/base.py` — BaseAgent 执行（ContextBuilder → tool loop → Memory，含 `ask_peer`）
+- `core/gateway/domain_registry.py` + `quality_domains`/`quality_rules` — 领域知识与规则（DB 驱动）
+- `core/skeleton/` — 长内容骨架系统（L4 + L1 + current_unit）
 - `core/run/plan_spec.py` / `phase_spec.py` / `template_compiler.py` — 计划契约 + 计划→图编译
-- `core/run/run_context.py` / `negotiation.py` / `diagnostics.py` — 状态真相、协商闭环、降级追踪
+- `core/run/run_context.py` / `diagnostics.py` — 状态真相、降级追踪
 - `core/gateway/` — 三层 Gateway（permission · budget · sandbox）
 - `db/schema.sql` — 引擎数据模型基线（领域 / 质量规则 / 骨架均为数据驱动）
 
