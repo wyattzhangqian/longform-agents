@@ -47,9 +47,15 @@ async def seed_demo() -> None:
 
     # 2) 两个 demo Agent（匹配器只认 active，跨领域匹配靠 capabilities）
     registry = get_registry()
+    # 能力匹配是精确交集，且无领域时引擎用「11 个通用能力」英文词表：
+    # research / analysis / writing / review / planning / data_collection /
+    # content_creation / quality_check / summarization / execution / general
+    # demo agent 必须用这套英文词，才能被 discovery 选中。
     for aid, name, role, caps in [
-        ("demo_writer", "Demo 写作 Agent", "writer", ["写作", "初稿"]),
-        ("demo_editor", "Demo 编辑 Agent", "editor", ["润色", "审校"]),
+        ("demo_writer", "Demo 写作 Agent", "writer",
+         ["writing", "content_creation", "execution", "general"]),
+        ("demo_editor", "Demo 编辑 Agent", "editor",
+         ["review", "quality_check", "summarization", "general"]),
     ]:
         if await registry.get(aid):
             continue
@@ -97,14 +103,15 @@ async def main() -> int:
 
         result = await plan_natural(task, save_draft=False)
         plan = result["plan"]
-        phases = plan.get("phases", [])
+        # 匹配后的 phases（带 agent_id/agent_name）在 result["phases"]
+        phases = result.get("phases") or plan.get("phases", [])
 
         print(f"🧠 领域：{result.get('domain_id') or '通用'}\n")
         print("📋 生成计划（PlanSpec）：")
         for i, ph in enumerate(phases, 1):
             deps = ",".join(ph.get("dependencies") or []) or "—"
             title = ph.get("title") or ph.get("name") or ph.get("phase_id")
-            agent = ph.get("agent_id") or "待匹配"
+            agent = ph.get("agent_name") or ph.get("agent_id") or "待匹配"
             print(f"  {i}. [{ph.get('phase_id')}] {title}  负责: {agent}  依赖: {deps}")
 
         print("\n✅ 规划链路跑通。")
