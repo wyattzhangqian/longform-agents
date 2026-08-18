@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)]() [![CI](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml/badge.svg)](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml)
 
-面向多模态长内容的多 Agent 协作框架。最底层，它是一套**高可靠的 Agent 协作框架**——让多个 AI 真正协作，把一件大而连续的事情做成；网文小说、漫画分镜、漫剧、歌曲，是它跑通的场景。
+Longform Agents 是一套多 Agent 协作框架，面向网文、漫画分镜、漫剧、歌曲这些多模态长内容。它让一队分工的 AI 真正协作，把一件大而连续的事情从头做到尾——不跑偏，不前后矛盾。
 
 ## 为什么会有它
 
