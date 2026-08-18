@@ -1,0 +1,405 @@
+[
+  {
+    "id": "platform:general:output_not_empty",
+    "domain_id": "platform:general",
+    "rule_id": "output_not_empty",
+    "name": "产出非空",
+    "description": "Agent 必须返回有效内容",
+    "phase_id": "",
+    "check_type": "not_empty",
+    "severity": "error",
+    "enabled": 1,
+    "config": {},
+    "fix_hint": "请确保Agent产出了实际内容而非空响应",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 1
+  },
+  {
+    "id": "platform:general:output_min_length",
+    "domain_id": "platform:general",
+    "rule_id": "output_min_length",
+    "name": "最低字数",
+    "description": "产出需达到基本字数，过短说明未充分展开",
+    "phase_id": "",
+    "check_type": "min_length",
+    "severity": "warning",
+    "enabled": 1,
+    "config": {
+      "min_chars": 50
+    },
+    "fix_hint": "当前内容过短，请展开描述或补充细节",
+    "auto_fix_capable": 1,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 2
+  },
+  {
+    "id": "platform:general:output_max_length",
+    "domain_id": "platform:general",
+    "rule_id": "output_max_length",
+    "name": "最大字数",
+    "description": "防止LLM失控输出超长内容",
+    "phase_id": "",
+    "check_type": "max_length",
+    "severity": "warning",
+    "enabled": 1,
+    "config": {
+      "max_chars": 50000
+    },
+    "fix_hint": "内容超长，请精简或分段输出",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 3
+  },
+  {
+    "id": "platform:general:no_hallucination_markers",
+    "domain_id": "platform:general",
+    "rule_id": "no_hallucination_markers",
+    "name": "幻觉标记检测",
+    "description": "检测Agent是否在不确定时仍强行输出",
+    "phase_id": "",
+    "check_type": "keyword_absent",
+    "severity": "warning",
+    "enabled": 1,
+    "config": {
+      "keywords": [
+        "我不确定",
+        "我没有这方面信息",
+        "作为AI我无法",
+        "I don't have",
+        "I'm not sure"
+      ]
+    },
+    "fix_hint": "Agent表达了不确定性，请验证相关内容或改用确定性表述",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 4
+  },
+  {
+    "id": "platform:general:format_markdown",
+    "domain_id": "platform:general",
+    "rule_id": "format_markdown",
+    "name": "Markdown格式",
+    "description": "文本产出应有基本的Markdown结构",
+    "phase_id": "",
+    "check_type": "markdown_structure",
+    "severity": "info",
+    "enabled": 1,
+    "config": {
+      "require_h2": true,
+      "min_sections": 1
+    },
+    "fix_hint": "建议使用标题和段落组织内容",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 5
+  },
+  {
+    "id": "platform:general:no_sensitive_content",
+    "domain_id": "platform:general",
+    "rule_id": "no_sensitive_content",
+    "name": "敏感内容检测",
+    "description": "产出不应包含政治敏感、色情或暴力内容",
+    "phase_id": "",
+    "check_type": "keyword_absent",
+    "severity": "error",
+    "enabled": 1,
+    "config": {
+      "keywords": []
+    },
+    "fix_hint": "请移除敏感内容",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 6
+  },
+  {
+    "id": "platform:general:language_match",
+    "domain_id": "platform:general",
+    "rule_id": "language_match",
+    "name": "语言一致性",
+    "description": "产出语言应与任务要求一致",
+    "phase_id": "",
+    "check_type": "regex_match",
+    "severity": "warning",
+    "enabled": 1,
+    "config": {
+      "pattern": "[\\u4e00-\\u9fff]",
+      "expect_match": true,
+      "fail_message": "任务要求中文但产出中缺少中文内容"
+    },
+    "fix_hint": "请使用任务要求的语言输出",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 7
+  },
+  {
+    "id": "platform:general:no_truncation",
+    "domain_id": "platform:general",
+    "rule_id": "no_truncation",
+    "name": "未截断检查",
+    "description": "产出不应以省略号或未完待续结尾",
+    "phase_id": "",
+    "check_type": "keyword_absent",
+    "severity": "warning",
+    "enabled": 1,
+    "config": {
+      "keywords": [
+        "（未完待续）",
+        "（待续）",
+        "...（以下省略）",
+        "[未完]"
+      ]
+    },
+    "fix_hint": "产出似乎被截断，请输出完整内容",
+    "auto_fix_capable": 1,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 8
+  },
+  {
+    "id": "platform:web_novel:outline.protagonist",
+    "domain_id": "platform:web_novel",
+    "rule_id": "outline.protagonist",
+    "name": "主角设定完整",
+    "description": "大纲需包含主角的核心设定",
+    "phase_id": "outline",
+    "check_type": "keyword_present",
+    "severity": "error",
+    "enabled": 1,
+    "config": {
+      "keywords": [
+        "主角",
+        "主人公",
+        "设定",
+        "金手指",
+        "能力",
+        "性格",
+        "目标",
+        "动机"
+      ]
+    },
+    "fix_hint": "大纲需明确主角的身份、能力、性格和核心动机",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 1
+  },
+  {
+    "id": "platform:web_novel:outline.conflict",
+    "domain_id": "platform:web_novel",
+    "rule_id": "outline.conflict",
+    "name": "核心冲突",
+    "description": "大纲需明确核心矛盾和对手",
+    "phase_id": "outline",
+    "check_type": "keyword_present",
+    "severity": "error",
+    "enabled": 1,
+    "config": {
+      "keywords": [
+        "冲突",
+        "矛盾",
+        "对手",
+        "反派",
+        "阻碍",
+        "困难",
+        "危机"
+      ]
+    },
+    "fix_hint": "大纲需明确故事的核心冲突和主要对手/阻碍",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 2
+  },
+  {
+    "id": "platform:web_novel:outline.power_system",
+    "domain_id": "platform:web_novel",
+    "rule_id": "outline.power_system",
+    "name": "体系设定",
+    "description": "如有世界观体系需在大纲中说明",
+    "phase_id": "outline",
+    "check_type": "keyword_present",
+    "severity": "info",
+    "enabled": 1,
+    "config": {
+      "keywords": [
+        "等级",
+        "体系",
+        "修炼",
+        "级别",
+        "阶段",
+        "境界",
+        "power"
+      ]
+    },
+    "fix_hint": "如果故事涉及修炼/等级体系，建议在大纲中明确",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 3
+  },
+  {
+    "id": "platform:web_novel:draft.chapter_length",
+    "domain_id": "platform:web_novel",
+    "rule_id": "draft.chapter_length",
+    "name": "章节字数",
+    "description": "网文单章字数建议2000-4000字",
+    "phase_id": "draft",
+    "check_type": "min_length",
+    "severity": "warning",
+    "enabled": 1,
+    "config": {
+      "min_chars": 1500
+    },
+    "fix_hint": "章节内容过短，网文单章建议2000-4000字",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 10
+  },
+  {
+    "id": "platform:web_novel:draft.hook_ending",
+    "domain_id": "platform:web_novel",
+    "rule_id": "draft.hook_ending",
+    "name": "章末钩子",
+    "description": "每章结尾应有悬念或转折",
+    "phase_id": "draft",
+    "check_type": "keyword_present",
+    "severity": "warning",
+    "enabled": 1,
+    "config": {
+      "keywords": [
+        "然而",
+        "忽然",
+        "就在这时",
+        "没想到",
+        "但是",
+        "竟然",
+        "突然",
+        "可就在",
+        "话音刚落"
+      ]
+    },
+    "fix_hint": "章节结尾建议设置悬念钩子，增加读者继续阅读的欲望",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 11
+  },
+  {
+    "id": "platform:web_novel:draft.dialogue_ratio",
+    "domain_id": "platform:web_novel",
+    "rule_id": "draft.dialogue_ratio",
+    "name": "对话比例",
+    "description": "正文对话占比建议30%-60%",
+    "phase_id": "draft",
+    "check_type": "ratio_check",
+    "severity": "info",
+    "enabled": 1,
+    "config": {
+      "pattern_a": "[「\"\"].*?[」\"\"]",
+      "pattern_b": "[一-鿿]",
+      "min_ratio": 0.1,
+      "max_ratio": 0.7,
+      "label": "对话占比"
+    },
+    "fix_hint": "对话比例偏高或偏低，建议保持对话与叙述的平衡",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 12
+  },
+  {
+    "id": "platform:web_novel:draft.pov_consistency",
+    "domain_id": "platform:web_novel",
+    "rule_id": "draft.pov_consistency",
+    "name": "视角一致性",
+    "description": "同一章节内叙事视角应保持一致",
+    "phase_id": "draft",
+    "check_type": "keyword_absent",
+    "severity": "warning",
+    "enabled": 1,
+    "config": {
+      "keywords": []
+    },
+    "fix_hint": "同一章节内避免视角混乱切换",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 13
+  },
+  {
+    "id": "platform:web_novel:polish.filler_words",
+    "domain_id": "platform:web_novel",
+    "rule_id": "polish.filler_words",
+    "name": "水词检测",
+    "description": "润色后应减少无意义的填充词",
+    "phase_id": "polish",
+    "check_type": "keyword_absent",
+    "severity": "info",
+    "enabled": 1,
+    "config": {
+      "keywords": [
+        "的话",
+        "然后的话",
+        "就是说",
+        "基本上",
+        "某种意义上",
+        "其实也"
+      ]
+    },
+    "fix_hint": "存在较多口语化填充词，建议精简",
+    "auto_fix_capable": 1,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 20
+  },
+  {
+    "id": "platform:web_novel:proofread.typo_patterns",
+    "domain_id": "platform:web_novel",
+    "rule_id": "proofread.typo_patterns",
+    "name": "常见错字",
+    "description": "校对阶段检测常见错别字模式",
+    "phase_id": "proofread",
+    "check_type": "keyword_absent",
+    "severity": "warning",
+    "enabled": 1,
+    "config": {
+      "keywords": [
+        "的得地混用",
+        "在再混用"
+      ]
+    },
+    "fix_hint": "检测到可能的错别字",
+    "auto_fix_capable": 1,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 30
+  },
+  {
+    "id": "platform:web_novel:proofread.name_consistency",
+    "domain_id": "platform:web_novel",
+    "rule_id": "proofread.name_consistency",
+    "name": "人名一致性",
+    "description": "检查角色名字在全文中拼写一致",
+    "phase_id": "proofread",
+    "check_type": "semantic_check",
+    "severity": "warning",
+    "enabled": 1,
+    "config": {
+      "check_description": "检查角色名字是否在文中有不同的拼写变体"
+    },
+    "fix_hint": "角色名字拼写可能不一致，请核实",
+    "auto_fix_capable": 0,
+    "source": "platform",
+    "owner_id": "",
+    "sort_order": 31
+  }
+]

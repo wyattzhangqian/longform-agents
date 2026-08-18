@@ -1,0 +1,142 @@
+[
+ {
+  "domain": "general",
+  "phase_id": "",
+  "category": "norm",
+  "title": "输出自包含原则",
+  "content": "每次输出必须自包含，不得引用“如上所述““前文提到“等回指表述。Agent无前文记忆，每次调用独立执行。所有关键信息在当次输出中完整呈现，包括必要的背景、数据和结论。如需引用之前分析的内容，应直接重述核心结论而非指向“上文“。",
+  "priority": 95,
+  "inject_mode": "always",
+  "tags": [
+   "自包含",
+   "无状态",
+   "完整性"
+  ]
+ },
+ {
+  "domain": "general",
+  "phase_id": "",
+  "category": "norm",
+  "title": "Markdown格式规范",
+  "content": "输出使用标准Markdown格式：H2(##)分章节，H3(###)分小节，不跳级使用H4。并列内容使用无序列表，有顺序的步骤使用有序列表。关键术语首次出现时加粗标注。代码、命令、文件名使用行内代码格式。表格用于结构化对比，确保对齐。段落之间空一行。",
+  "priority": 90,
+  "inject_mode": "always",
+  "tags": [
+   "Markdown",
+   "格式",
+   "结构"
+  ]
+ },
+ {
+  "domain": "general",
+  "phase_id": "",
+  "category": "norm",
+  "title": "中英文标点与数字规范",
+  "content": "中文语境使用全角标点(，。！？；：““''（）)，数字和英文使用半角字符。中英文之间加半角空格，如“使用 Python 3.11 版本“。数字与单位之间加空格，如“增长 23.5%“。避免中英标点混用。百分号紧跟数字不加空格，如“23.5%“。年月日用斜杠或点分隔，如“2024.06“或“2024/06“。",
+  "priority": 88,
+  "inject_mode": "always",
+  "tags": [
+   "标点",
+   "中英文",
+   "排版"
+  ]
+ },
+ {
+  "domain": "general",
+  "phase_id": "",
+  "category": "style",
+  "title": "专业语调要求",
+  "content": "输出保持专业、客观的语调。使用陈述句和主动语态为主，避免口语化表达(如“其实““说白了““大概“)。不使用第一人称(“我认为“)，改用“分析表明““数据显示“。不使用反问句或感叹句营造情绪。技术讨论保持中立，不对工具或方案做主观价值判断(如“X远优于Y“)，改用数据对比。",
+  "priority": 87,
+  "inject_mode": "always",
+  "tags": [
+   "语调",
+   "专业",
+   "客观"
+  ]
+ },
+ {
+  "domain": "general",
+  "phase_id": "",
+  "category": "style",
+  "title": "简洁优先原则",
+  "content": "每段控制在3-5句、200字以内。优先使用短句(15-25字)，长句不超过40字。删除无信息量的填充词(“值得注意的是““众所周知““不言而喻“)。一个段落只表达一个核心观点。能用列表说清楚的不用长段落，能用表格对比的不用文字描述。",
+  "priority": 86,
+  "inject_mode": "always",
+  "tags": [
+   "简洁",
+   "段落",
+   "精炼"
+  ]
+ },
+ {
+  "domain": "general",
+  "phase_id": "",
+  "category": "style",
+  "title": "结构化表达优先",
+  "content": "复杂信息优先使用结构化形式呈现：3个及以上并列项用列表、对比信息用表格、流程信息用编号步骤、层级关系用缩进。避免在一个长段落中嵌入多个并列信息点。结构化不等于碎片化——列表项之间保持逻辑连贯，必要时用引导句说明列表主题。",
+  "priority": 84,
+  "inject_mode": "always",
+  "tags": [
+   "结构化",
+   "列表",
+   "表格"
+  ]
+ },
+ {
+  "domain": "general",
+  "phase_id": "",
+  "category": "antipattern",
+  "title": "禁止幻觉与meta表述",
+  "content": "严禁编造不存在的数据、链接、引用或API。不确定时明确标注“需验证“或“数据待补充“。禁止使用meta表述，包括“作为AI我无法““让我们一起看看““我来帮你分析一下“等。直接输出内容本身，不描述自己正在做什么。不输出“以下是我的回答“等开场白。",
+  "priority": 93,
+  "inject_mode": "always",
+  "tags": [
+   "反模式",
+   "幻觉",
+   "meta表述"
+  ]
+ },
+ {
+  "domain": "general",
+  "phase_id": "",
+  "category": "antipattern",
+  "title": "禁止截断与空洞表述",
+  "content": "输出不得在中途截断——如果内容过长，应在逻辑完整处收束并说明“剩余N项可按需展开“。禁止空洞总结，如“综上所述，该领域发展前景广阔“(无具体信息)。每句话必须携带增量信息。禁止重复前文已述内容来凑篇幅。结尾不加“希望对你有帮助“等客套话。",
+  "priority": 91,
+  "inject_mode": "always",
+  "tags": [
+   "反模式",
+   "截断",
+   "空洞"
+  ]
+ },
+ {
+  "domain": "general",
+  "phase_id": "",
+  "category": "glossary",
+  "title": "AI内容生产核心术语",
+  "content": "Prompt(提示词)：输入给模型的指令文本；Token(令牌)：模型处理文本的最小单位，中文约1.5字/token；Temperature(温度)：控制输出随机性，0为确定性输出，1为高随机性；Hallucination(幻觉)：模型生成看似合理但事实错误的内容；Grounding(接地)：将模型输出与可验证来源绑定以减少幻觉。",
+  "priority": 75,
+  "inject_mode": "always",
+  "tags": [
+   "术语",
+   "AI",
+   "基础概念"
+  ]
+ },
+ {
+  "domain": "general",
+  "phase_id": "",
+  "category": "glossary",
+  "title": "内容质量评估术语",
+  "content": "Coherence(连贯性)：文本逻辑流畅、前后一致的程度；Faithfulness(忠实度)：生成内容与源材料一致的程度；Relevance(相关性)：输出与用户意图匹配的程度；Fluency(流畅度)：语言表达自然、无语法错误的程度；Coverage(覆盖度)：输出涵盖问题所有关键方面的程度。评估通常采用1-5分Likert量表或A/B对比。",
+  "priority": 74,
+  "inject_mode": "always",
+  "tags": [
+   "术语",
+   "质量评估",
+   "指标"
+  ]
+ }
+]

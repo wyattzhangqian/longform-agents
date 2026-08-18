@@ -1,0 +1,67 @@
+[
+  {
+    "id": "platform:general",
+    "name": "通用",
+    "description": "所有领域共享的基础质量规则",
+    "emoji": "🛡️",
+    "source": "platform",
+    "owner_id": "",
+    "forked_from": "",
+    "phase_definitions": [],
+    "metadata": {
+      "applies_to_all": true
+    }
+  },
+  {
+    "id": "platform:web_novel",
+    "name": "网文小说",
+    "description": "网络小说连载创作，含大纲、章节、校对多阶段",
+    "emoji": "📖",
+    "source": "platform",
+    "owner_id": "",
+    "forked_from": "",
+    "phase_definitions": [
+      {
+        "id": "outline",
+        "label": "大纲",
+        "description": "故事骨架和人物设定",
+        "agent_role": "策划",
+        "artifact_files": [
+          "outline.md"
+        ]
+      },
+      {
+        "id": "draft",
+        "label": "正文",
+        "description": "章节正文撰写",
+        "agent_role": "作者",
+        "artifact_files": [
+          "draft.md"
+        ]
+      },
+      {
+        "id": "polish",
+        "label": "润色",
+        "description": "文风优化和细节补充",
+        "agent_role": "编辑",
+        "artifact_files": [
+          "polished.md"
+        ]
+      },
+      {
+        "id": "proofread",
+        "label": "校对",
+        "description": "错字病句和一致性检查",
+        "agent_role": "校对",
+        "artifact_files": [
+          "final.md"
+        ]
+      }
+    ],
+    "metadata": {
+      "typical_agents": 3,
+      "typical_mode": "adaptive",
+      "example_prompt": "写一部仙侠小说：仿照《邪风曲》，时代背景设定为宋朝，主角身世成谜"
+    }
+  }
+]
