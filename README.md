@@ -2,6 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)]() [![CI](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml/badge.svg)](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml)
 
+[![Stars](https://img.shields.io/github/stars/wyattzhangqian/longform-agents)](https://github.com/wyattzhangqian/longform-agents) [![Forks](https://img.shields.io/github/forks/wyattzhangqian/longform-agents)](https://github.com/wyattzhangqian/longform-agents) [![Issues](https://img.shields.io/github/issues/wyattzhangqian/longform-agents)](https://github.com/wyattzhangqian/longform-agents) [![PRs](https://img.shields.io/github/issues-pr/wyattzhangqian/longform-agents)](https://github.com/wyattzhangqian/longform-agents) [![Last Commit](https://img.shields.io/github/last-commit/wyattzhangqian/longform-agents)](https://github.com/wyattzhangqian/longform-agents) [![Contributors](https://img.shields.io/github/contributors/wyattzhangqian/longform-agents)](https://github.com/wyattzhangqian/longform-agents)
+
 面向网文、漫画、漫剧、音乐等多模态长内容的多 Agent 协作框架。
 
 ## 背景
