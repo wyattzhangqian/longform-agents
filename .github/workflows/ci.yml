@@ -8,8 +8,6 @@ on:
 jobs:
   engine-tests:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -24,25 +22,9 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      - name: Run engine tests + coverage
+      - name: Run engine tests
         # 不加 --timeout：部分集成测试（quality_gate_retry 等）跑 2-3 分钟，60s 会误杀
-        run: python -m pytest tests/ -p no:warnings --tb=short --cov=core --cov-report=json:/tmp/cov.json
+        run: python -m pytest tests/ -p no:warnings --tb=short
         env:
           DATABASE_PATH: /tmp/ci_test.db
           AUTH_ENABLED: "false"
-
-      - name: Generate coverage badge
-        run: python scripts/gen_coverage_badge.py /tmp/cov.json badges/coverage.json
-
-      - name: Commit coverage badge
-        if: github.event_name == 'push'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add badges/coverage.json
-          if git diff --cached --quiet; then
-            echo "coverage badge unchanged"
-          else
-            git commit -m "chore: update coverage badge [skip ci]"
-            git push origin oss
-          fi
