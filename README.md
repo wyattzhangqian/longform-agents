@@ -1,5 +1,7 @@
 # Longform Agents
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)]() [![CI](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml/badge.svg)](https://github.com/wyattzhangqian/longform-agents/actions/workflows/ci.yml)
+
 面向网文、漫画、漫剧、音乐等多模态长内容的多 Agent 协作框架。
 
 ## 背景
