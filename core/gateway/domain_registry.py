@@ -368,7 +368,7 @@ async def seed_platform_domains():
     await db.commit()
     if domains_added or rules_added:
         _logger.info(
-            "平台领域种子初始化: +%d 领域, +%d 规则 (总计 %d 领域, %d 规则)",
+            "平台领域种子初始化: +{} 领域, +{} 规则 (总计 {} 领域, {} 规则)",
             domains_added, rules_added,
             len(PLATFORM_DOMAINS), len(PLATFORM_RULES),
         )

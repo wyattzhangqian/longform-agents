@@ -302,6 +302,12 @@ async def _run_migrations():
     if not files:
         return
 
+    # 条件迁移：只有旧结构存在时才执行（全新部署 schema.sql 已是新结构，跳过）
+    # value = 要检查的旧结构标志列
+    _CONDITIONAL_MIGRATIONS = {
+        "026_asset_versions_unify.sql": {"table": "asset_versions", "old_column": "id"},
+    }
+
     for fpath in files:
         version = fpath.name  # e.g. "003_quality_domains.sql"
         if version in applied:
@@ -311,6 +317,21 @@ async def _run_migrations():
         try:
             sql = fpath.read_text(encoding="utf-8")
             checksum = hashlib.sha256(sql.encode()).hexdigest()[:16]
+            # 条件迁移：旧结构标志列不存在（已是新结构）→ 跳过，标记已应用
+            cond = _CONDITIONAL_MIGRATIONS.get(version)
+            if cond:
+                cursor = await db.execute(
+                    f"SELECT 1 FROM pragma_table_info('{cond['table']}') WHERE name = ?",
+                    (cond["old_column"],),
+                )
+                if not await cursor.fetchone():
+                    await db.execute(
+                        "INSERT OR REPLACE INTO schema_version (version, checksum) VALUES (?, ?)",
+                        (version, checksum),
+                    )
+                    await db.commit()
+                    _logger.info("✅ migration 条件跳过（已是新结构）: %s", version)
+                    continue
             await db.executescript(sql)
             await db.execute(
                 "INSERT OR REPLACE INTO schema_version (version, checksum) VALUES (?, ?)",

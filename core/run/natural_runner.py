@@ -175,8 +175,8 @@ async def plan_natural(
     # 领域识别（未显式指定时）
     if not domain_id:
         try:
-            from api.routes.plan import _match_domain_llm
-            matched_id, _, confidence, _ = await _match_domain_llm(task)
+            from core.orchestration.domain_matcher import match_domain_llm
+            matched_id, _, confidence, _ = await match_domain_llm(task)
             if matched_id:
                 domain_id = matched_id
                 _logger.info(f"natural LLM 识别 domain_id={domain_id} ({confidence:.2f})")
